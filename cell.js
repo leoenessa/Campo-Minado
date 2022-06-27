@@ -4,9 +4,9 @@ class Cell{
       this.i = i;
       this.j = j;
       this.lado = lado;
-      this.bomba = true;
-      this.aberto = random(1)<0.5;
-      this.numBombas = floor(random(4));
+      this.bomba = random(1)<0.2;
+      this.aberto = false;
+      this.numBombas = 0;
     }
   
     desenhar(){
@@ -14,8 +14,13 @@ class Cell{
         strokeWeight(1);
         fill(200);
         rect(this.i*lado,this.j*lado,this.lado);
-        fill(0);
-        text(this.numBombas,this.i*lado+lado/2,this.j*lado+lado/2)
+        fill(50);
+        if(this.bomba){
+          circle(this.i*lado+lado/2,this.j*lado+lado/2,this.lado/2)
+        }else{
+          text(this.numBombas,this.i*lado+lado/2,this.j*lado+lado/2)  
+        }
+        
       }else{
         strokeWeight(1);
         noFill();
@@ -23,9 +28,15 @@ class Cell{
       }
     }
   
-  abrir(){
+    abrir(){
     this.aberto=true;
   }
   
-    
+    setNumBombas(num){
+      this.numBombas = num;
+    }
+  
+    temBomba(){
+      return this.bomba;
+    }
 }
