@@ -7,6 +7,7 @@ class Cell{
       this.bomba = random(1)<0.2;
       this.aberto = false;
       this.numBombas = 0;
+      this.marcada = false;
     }
   
     desenhar(){
@@ -18,7 +19,8 @@ class Cell{
         if(this.bomba){
           circle(this.i*lado+lado/2,this.j*lado+lado/2,this.lado/2)
         }else{
-          text(this.numBombas,this.i*lado+lado/2,this.j*lado+lado/2)  
+          textSize(16);
+          text(this.numBombas,this.i*lado+lado/2,this.j*lado+lado/2);  
         }
         
       }else{
@@ -26,11 +28,21 @@ class Cell{
         noFill();
         rect(this.i*lado,this.j*lado,this.lado);
       }
+      
+      if(this.marcada){
+        strokeWeight(1);
+        fill(color('red'));
+        rect(this.i*lado,this.j*lado,this.lado);
+      }
     }
   
     abrir(){
-    this.aberto=true;
-  }
+      this.aberto=true;
+    }
+  
+    marcar(){
+      this.marcada = !this.marcada;
+    }
   
     setNumBombas(num){
       this.numBombas = num;
