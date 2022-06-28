@@ -64,6 +64,37 @@ function draw() {
 
 function abrirBloco(i,j){
   grid[i][j].abrir();
+  if(grid[i][j].numBombas == 0){
+    floodFill(i,j);
+  }
+}
+
+function floodFill(iInicial,jInicial){
+  console.log("Iniciar FloodFill");
+  for(let y=-1;y<2;y++){
+    for(let x=-1;x<2;x++){
+      let ioff = iInicial+x;
+      let joff = jInicial+y;
+          
+        if(ioff<0 || joff<0 || ioff>=linhas || joff>=colunas ){
+          continue;
+        }
+        if(ioff == iInicial && joff==jInicial){
+          continue;
+        }
+          
+        if(grid[ioff][joff].aberto){
+          continue;
+        }else{
+          abrirBloco(ioff,joff);  
+        }
+        
+    }  
+  }
+  
+  
+  
+  
 }
 
 function marcarBloco(i,j){
