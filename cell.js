@@ -19,8 +19,13 @@ class Cell{
         if(this.bomba){
           circle(this.i*lado+lado/2,this.j*lado+lado/2,this.lado/2)
         }else{
-          textSize(16);
-          text(this.numBombas,this.i*lado+lado/2,this.j*lado+lado/2);  
+          if(this.numBombas==0){
+            
+          }else{
+            textSize(16);
+            text(this.numBombas,this.i*lado+lado/2,this.j*lado+lado/2);    
+          }
+          
         }
         
       }else{
