@@ -1,6 +1,6 @@
-let colunas = 20;
-let linhas = 20;
-let lado = 20;
+let colunas = 10;
+let linhas = 10;
+let lado = 40;
 // let colunas = 5;
 // let linhas = 5;
 // let lado = 80;
@@ -66,11 +66,20 @@ function abrirBloco(i,j){
   grid[i][j].abrir();
 }
 
+function marcarBloco(i,j){
+  grid[i][j].marcar();
+}
+
 function mousePressed(){
   let i = floor(mouseX/lado);
   let j = floor(mouseY/lado);
   
-  abrirBloco(i,j);
+  
+  if(keyIsDown(ALT)){
+     marcarBloco(i,j);
+  }else{
+    abrirBloco(i,j);
+  }
   
   
 }
