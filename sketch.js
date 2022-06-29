@@ -2,8 +2,8 @@ let INICIANTE = 10;
 let MEDIO = 15;
 let AVANCADO = 20;
 
-let colunas = MEDIO;
-let linhas = MEDIO;
+let colunas = INICIANTE;
+let linhas = INICIANTE;
 let lado;
 
 let BOMBAS;
@@ -91,7 +91,6 @@ function abrirBloco(i,j){
   if(grid[i][j].temBomba()){
     gameOver(false);
   }
-  
   if(grid[i][j].numBombas == 0){
     floodFill(i,j);
   }
@@ -125,8 +124,42 @@ function marcarBloco(i,j){
   } 
 }
 
+function checarStatusJogo(){
+  let celulasFechadas = 0;
+  let celulasMarcadas = 0;
+  
+  for(let i=0;i<colunas;i++){
+    for(let j=0;j<linhas;j++){
+      if(grid[i][j].fechado){
+        celulasFechadas++;
+      }
+      if(grid[i][j].marcada){
+        celulasMarcadas++;
+      }
+    }
+  } 
+  //Se não há mais celulas fechadas e a quantidade de celulas marcadas
+  //for igual à quantidade de bombas
+  if(celulasFechadas==0 && celulasMarcadas==BOMBAS){
+    let contadorBombasMarcadas = 0;
+      for(let i=0;i<colunas;i++){
+        for(let j=0;j<linhas;j++){
+          //Se a celula tem bomba e esta marcada, conta uma bomba marcada
+          //corretamente
+          if(grid[i][j].marcada && grid[i][j].temBomba()){
+            contadorBombasMarcadas++;
+          }
+        }
+      }
+    
+      if(contadorBombasMarcadas==BOMBAS){
+        gameOver(true);
+      }
+  }
+}
+
 function gameOver(ganhou){
-  noLoop();
+  //noLoop();
   let resultP = createP('');
   resultP.style('font-size', '32pt');
     
@@ -147,4 +180,6 @@ function mousePressed(){
   }else{
     abrirBloco(i,j);
   }
+  
+  checarStatusJogo();
 }
