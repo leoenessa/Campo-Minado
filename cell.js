@@ -4,7 +4,7 @@ class Cell{
       this.i = i;
       this.j = j;
       this.lado = lado;
-      this.bomba = random(1)<0.2;
+      this.bomba = false;
       this.aberto = false;
       this.numBombas = 0;
       this.marcada = false;
@@ -55,5 +55,9 @@ class Cell{
   
     temBomba(){
       return this.bomba;
+    }
+  
+    setarBomba(){
+      this.bomba=true;
     }
 }
