@@ -1,10 +1,23 @@
-let colunas = 10;
-let linhas = 10;
-let lado = 40;
+let INICIANTE = 10;
+let MEDIO = 15;
+let AVANCADO = 20;
+
+let colunas = MEDIO;
+let linhas = MEDIO;
+let lado;
+
+let BOMBAS;
+if(colunas!=20){
+  BOMBAS=colunas+5;
+}else{
+  BOMBAS = 60;
+}
+
 // let colunas = 5;
 // let linhas = 5;
 // let lado = 80;
 let grid = [];
+let espacoDisponivelBomba = [];
 
 function criaArray2D(col,lin){
   let arr = new Array(col);
@@ -16,13 +29,25 @@ function criaArray2D(col,lin){
 
 function setup() {
   createCanvas(401, 401);
+  lado =floor(width/colunas);
+  
   //Povoando com celulas
   grid = criaArray2D(colunas,linhas);
   for(let i=0;i<colunas;i++){
     for(let j=0;j<linhas;j++){
       grid[i][j] = new Cell(i,j, lado);
+      espacoDisponivelBomba.push({i,j});
     }
   }
+  
+  //Incluindo bombas
+  for(let c=0;c<BOMBAS;c++){
+    let indiceAleatorio = floor(random(espacoDisponivelBomba.length));
+    let escolha = espacoDisponivelBomba[indiceAleatorio];
+    espacoDisponivelBomba.splice(indiceAleatorio,1);
+    grid[escolha.i][escolha.j].setarBomba();
+  }
+  
   
   //Percorrendo grid e descobrindo a quantidade de bombas ao redor
   for(let i=0;i<colunas;i++){
@@ -46,7 +71,6 @@ function setup() {
           }
         }  
       }
-      
       grid[i][j].setNumBombas(qtdeBomba);  
     }
   } 
@@ -64,6 +88,10 @@ function draw() {
 
 function abrirBloco(i,j){
   grid[i][j].abrir();
+  if(grid[i][j].temBomba()){
+    gameOver(false);
+  }
+  
   if(grid[i][j].numBombas == 0){
     floodFill(i,j);
   }
@@ -81,36 +109,42 @@ function floodFill(iInicial,jInicial){
         }
         if(ioff == iInicial && joff==jInicial){
           continue;
-        }
-          
+        } 
         if(grid[ioff][joff].aberto){
           continue;
         }else{
           abrirBloco(ioff,joff);  
-        }
-        
+        }     
     }  
   }
-  
-  
-  
-  
 }
 
 function marcarBloco(i,j){
-  grid[i][j].marcar();
+  if(!grid[i][j].aberto){
+    grid[i][j].marcar();
+  } 
+}
+
+function gameOver(ganhou){
+  noLoop();
+  let resultP = createP('');
+  resultP.style('font-size', '32pt');
+    
+  if(ganhou){
+    resultP.html(`PARABÉNS!`);
+  }else{
+    resultP.html(`BOOM!!!!`);
+  }
 }
 
 function mousePressed(){
+  
   let i = floor(mouseX/lado);
   let j = floor(mouseY/lado);
-  
   
   if(keyIsDown(ALT)){
      marcarBloco(i,j);
   }else{
     abrirBloco(i,j);
   }
-  
-  
 }
